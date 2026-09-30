@@ -1,7 +1,9 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { D } from "@/lib/kitsune";
 import { LangMenu, T } from "./i18n";
+
 export const SECTIONS = [
   ["model", "Model", "モデル"],
   ["data", "Data", "データ"],
@@ -10,7 +12,9 @@ export const SECTIONS = [
   ["samples", "Samples", "出力例"],
   ["resources", "Links", "リンク"],
 ] as const;
+
 type Theme = "system" | "light" | "dark";
+
 function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>("system");
   useEffect(() => {
@@ -55,5 +59,61 @@ function ThemeToggle() {
         )}
       </svg>
     </button>
+  );
+}
+
+export function Nav() {
+  const [active, setActive] = useState<string>("");
+  useEffect(() => {
+    const els = SECTIONS.map(([id]) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const io = new IntersectionObserver(
+      (entries) => {
+        const vis = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (vis[0]) setActive(vis[0].target.id);
+      },
+      { rootMargin: "-20% 0px -70% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+  const L = D.project.links;
+  return (
+    <header className="sticky z-40 border-b border-line bg-paper/85 backdrop-blur" style={{ top: "env(safe-area-inset-top, 0px)" }}>
+      <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 py-2.5 sm:gap-3 sm:px-6">
+        <a href="#top" className="flex shrink-0 items-center gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element -- static export */}
+          <img src="logo.png" alt="" width={28} height={28} className="h-7 w-7" />
+          <span className="font-display text-base font-bold sm:text-lg">Kitsune Tales</span>
+          <span className="hidden text-xs text-muted md:inline">狐の物語</span>
+        </a>
+        <nav aria-label="Sections" className="no-scrollbar min-w-0 flex-1 overflow-x-auto">
+          <ul className="flex gap-0.5 whitespace-nowrap text-sm">
+            {SECTIONS.map(([id, en, ja]) => (
+              <li key={id}>
+                <a
+                  href={`#${id}`}
+                  className={`rounded-md px-2.5 py-1 transition-colors ${active === id ? "bg-accent-soft text-accent" : "text-ink-2 hover:text-ink"}`}
+                >
+                  <T en={en} ja={ja} mix="ja" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="hidden items-center gap-3 text-xs text-ink-2 lg:flex">
+          <a href={L.github} target="_blank" rel="noreferrer" className="hover:text-accent">
+            GitHub
+          </a>
+          <a href={L.collection} target="_blank" rel="noreferrer" className="hover:text-accent">
+            Hugging Face
+          </a>
+          <a href={L.wandb} target="_blank" rel="noreferrer" className="hover:text-accent">
+            W&amp;B
+          </a>
+        </div>
+        <LangMenu />
+        <ThemeToggle />
+      </div>
+    </header>
   );
 }
