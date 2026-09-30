@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 /* Kitsune Tales. A research page with a Japanese hand: sumi-grey monotone surfaces, one blue-violet accent (kikyō,
    the bellflower) for links and focus, and fox-gold / sakura reserved for the hero and the characters.
    Chart series colors are a separate categorical set (--s1..--s6), fixed per system and shared with kitsune.figures. */
@@ -37,6 +38,7 @@
     --line: #27272e;
     --accent: #a6a2ff;
     --accent-soft: #1f1e3a;
+    --gold: #f0b458;
     --sakura: #f59ab0;
     --good: #3ccf7a;
     --bad: #ff7b6b;
@@ -62,6 +64,8 @@
   --line: #27272e;
   --accent: #a6a2ff;
   --accent-soft: #1f1e3a;
+  --gold: #f0b458;
+  --sakura: #f59ab0;
   --good: #3ccf7a;
   --bad: #ff7b6b;
   --s1: #3987e5;
@@ -73,7 +77,9 @@
   --q1: #1f4f8f;
   --q2: #3987e5;
   --q3: #9cc3f5;
+  color-scheme: dark;
 }
+
 @theme inline {
   --color-paper: var(--paper);
   --color-surface: var(--surface);
@@ -92,8 +98,10 @@
   --font-sans: var(--font-gothic), "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", Consolas, monospace;
 }
+
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(4.5rem + env(safe-area-inset-top, 0px));
 }
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -103,6 +111,7 @@ html {
   *::before,
   *::after {
     animation: none !important;
+    transition: none !important;
   }
 }
 body {
@@ -116,6 +125,7 @@ body {
 h1,
 h2,
 h3 {
+  text-wrap: balance;
 }
 .num {
   font-family: var(--font-mono);
@@ -139,6 +149,7 @@ h3 {
   writing-mode: vertical-rl;
   text-orientation: mixed;
 }
+
 /* Figures: one image per theme, both in the HTML; the inactive one is hidden. */
 .fig-dark {
   display: none;
@@ -156,4 +167,57 @@ h3 {
 }
 :root[data-theme="dark"] .fig-dark {
   display: block;
+}
+
+/* Language modes (components/i18n.tsx). "mix" is the default: English with the Japanese alongside.
+   Both texts are always in the HTML; these rules only choose what is visible and how the second one is set. */
+html[data-lang="en"] .i18n-ja,
+html[data-lang="ja"] .i18n-en,
+html[data-lang="mix"] .mx-no {
+  display: none !important;
+}
+html[data-lang="mix"] .i18n-ja.mx-sub {
+  display: block;
+  font-size: 0.8em;
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-top: 0.1em;
+}
+html[data-lang="mix"] .i18n-ja.mx-side {
+  margin-left: 0.45em;
+  font-size: 0.85em;
+  color: var(--muted);
+}
+html[data-lang="mix"] div.i18n-ja.mx-sub {
+  margin-top: 0.7em;
+  padding-left: 0.8em;
+  border-left: 2px solid var(--line);
+  font-size: 0.88em;
+}
+html[data-lang="ja"] body {
+  line-height: 1.85;
+}
+svg text.i18n-en,
+svg text.i18n-ja {
+  display: inline;
+}
+
+/* Hero: seigaiha waves as a repeating SVG, faded toward the content. */
+.seigaiha {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.1'%3E%3Cpath d='M0 30a30 30 0 0 1 60 0M6 30a24 24 0 0 1 48 0M12 30a18 18 0 0 1 36 0M18 30a12 12 0 0 1 24 0M-30 15a30 30 0 0 1 60 0M-24 15a24 24 0 0 1 48 0M-18 15a18 18 0 0 1 36 0M-12 15a12 12 0 0 1 24 0M30 15a30 30 0 0 1 60 0M36 15a24 24 0 0 1 48 0M42 15a18 18 0 0 1 36 0M48 15a12 12 0 0 1 24 0'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 60px 30px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 85% at 78% 45%, #000 15%, transparent 72%);
+  mask-image: radial-gradient(ellipse 70% 85% at 78% 45%, #000 15%, transparent 72%);
+  opacity: 0.1;
+}
+:root[data-theme="dark"] .seigaiha {
+  filter: invert(1);
+  opacity: 0.12;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .seigaiha {
+    filter: invert(1);
+    opacity: 0.12;
+  }
 }

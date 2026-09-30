@@ -1,5 +1,6 @@
 // Every number on the site comes from this file, which `python -m kitsune.site_export` builds from reports/.
 import raw from "@/data/kitsune.json";
+
 export type CI = { mean: number; low: number; high: number; n?: number | null };
 export type System = {
   id: string;
@@ -25,12 +26,15 @@ export type Judge = {
   validation: { accuracy: CI; by_corruption: Record<string, number>; n: number } | null;
 };
 export type Lang = "ja" | "en";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const D = raw as any;
+
 export const LANGS: { id: Lang; label: string; slug: string }[] = [
   { id: "ja", label: "日本語", slug: D.project.models[0].slug },
   { id: "en", label: "English", slug: D.project.models[1].slug },
 ];
+
 export function systems(lang: Lang): System[] {
   return D.eval[lang].systems as System[];
 }
@@ -49,6 +53,7 @@ export function baseId(lang: Lang) {
 export function variantId(lang: Lang) {
   return lang === "ja" ? "kitsune" : "kitsune-en-sft";
 }
+
 // Fixed color per system: color follows the entity, never its rank (validated categorical slots).
 const SLOT: Record<string, string> = {
   "kitsune-sft": "var(--s1)",
@@ -62,3 +67,22 @@ const SLOT: Record<string, string> = {
   teacher: "var(--s6)",
 };
 export const color = (id: string) => SLOT[id] ?? "var(--muted)";
+
+export const LABEL: Record<string, string> = {
+  base: "Gemma 4 E4B (base)",
+  "base-en": "Gemma 4 E4B (base)",
+  "kitsune-sft": "Kitsune JP · SFT",
+  kitsune: "Kitsune JP · SFT + DPO v2",
+  "kitsune-en-sft": "Kitsune EN · SFT",
+  "kitsune-en": "Kitsune EN · SFT + DPO",
+  "qwen3.5-4b": "Qwen3.5-4B",
+  "qwen3.5-9b": "Qwen3.5-9B",
+  teacher: "Teacher (Qwen3.6-35B)",
+};
+export const label = (id: string) => LABEL[id] ?? id;
+
+export const pct = (x: number | null | undefined, d = 1) => (x == null || Number.isNaN(x) ? "n/a" : `${(x * 100).toFixed(d)}%`);
+export const signed = (x: number, d = 2) => `${x >= 0 ? "+" : "−"}${Math.abs(x).toFixed(d)}`;
+export const usd = (x: number) => `$${x.toFixed(2)}`;
+export const int = (x: number) => x.toLocaleString("en-US");
+export const ciText = (c: CI | null | undefined, d = 1) => (c ? `${pct(c.mean, d)} [${pct(c.low, d)}, ${pct(c.high, d)}]` : "n/a");
