@@ -1,7 +1,7 @@
 import { Hero } from "@/components/hero";
 import { Footer, Resources, Samples } from "@/components/links";
 import { Nav } from "@/components/nav";
-import { Results } from "@/components/results";
+import { Results } from "@/components/charts";
 import { DataSection, ModelSection, Training } from "@/components/sections";
 
 export default function Home() {
