@@ -201,7 +201,7 @@ export function Resources() {
     ["Single annotator", "アノテータは1名", "Manual checks and the sample translations come from one person.", "目視確認と出力例の翻訳は1名によるものです。"],
   ];
   return (
-    <Section id="resources" n="6" title={<T en="Links, usage and limits" ja="リンク・使い方・限界" />}>
+    <Section id="resources" n="6" title={<T en="Resources" ja="リソース" />}>
       <div className="grid gap-10 lg:grid-cols-2">
         {groups.map((g) => (
           <div key={g.en} className={`flex min-w-0 flex-col gap-2 ${g.en === "Models" ? "lg:row-span-2" : ""}`}>

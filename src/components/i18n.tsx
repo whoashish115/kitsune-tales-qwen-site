@@ -7,6 +7,7 @@ import { type ReactNode, useEffect, useRef, useState } from "react";
      side  the Japanese follows inline in a muted tone (short labels)
      en    English only (long running text where both would crowd the page)
      ja    Japanese only (navigation) */
+type Mix = "sub" | "side" | "en" | "ja";
 export function T({ en, ja, mix = "sub" }: { en: ReactNode; ja: ReactNode; mix?: Mix }) {
   return (
     <>
@@ -18,4 +19,7 @@ export function T({ en, ja, mix = "sub" }: { en: ReactNode; ja: ReactNode; mix?:
       </span>
     </>
   );
+}
+export function TB({ en, ja, className = "", mix = "sub" }: { en: ReactNode; ja: ReactNode; className?: string; mix?: "sub" | "en" }) {
+  return null;
 }

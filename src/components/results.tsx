@@ -130,7 +130,7 @@ export function Results() {
         }
       />
       <Meme />
-      <Sub id="safety" n="4.3" title={<T en="Safety and the release decision" ja="安全性と公開判断" />}>
+      <Sub id="safety" n="4.3" title={<T en="Safety" ja="安全性" />}>
         <T
           en={`DPO on quality pairs alone taught the Japanese model to turn disallowed requests into stories, sometimes with the real person still in them. The English DPO added ${D.training.dpo_pairs.en.safety} refusal-preference pairs and kept its refusals. A release rule, fixed before the judge results, then picked the model to ship for each language.`}
           ja={`品質ペアだけの DPO では、日本語モデルが禁止リクエストを物語に書き換えるようになり、実在人物が残ることもありました。英語の DPO には拒否を選好するペアを${D.training.dpo_pairs.en.safety}件加え、拒否率を維持しました。LLM 評価の結果より前に決めた公開ルールで、各言語の公開モデルを選んでいます。`}

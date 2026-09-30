@@ -60,7 +60,7 @@ function AtAGlance() {
   return (
     <div className="flex flex-col gap-3">
       <h3 className="font-display text-xl font-bold">
-        <T en="At a glance: base model vs Kitsune" ja="概要：ベースモデルと Kitsune の比較" />
+        <T en="At a glance" ja="概要" />
       </h3>
       <TableWrap>
         <table className="w-full min-w-[40rem] border-collapse text-sm">
