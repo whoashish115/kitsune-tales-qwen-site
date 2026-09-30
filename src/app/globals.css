@@ -1,5 +1,81 @@
 @import "tailwindcss";
+/* Kitsune Tales. A research page with a Japanese hand: sumi-grey monotone surfaces, one blue-violet accent (kikyō,
+   the bellflower) for links and focus, and fox-gold / sakura reserved for the hero and the characters.
+   Chart series colors are a separate categorical set (--s1..--s6), fixed per system and shared with kitsune.figures. */
+:root {
+  --paper: #f6f6f7; /* page plane, cool neutral */
+  --surface: #ffffff; /* raised panels */
+  --wash: #efeff2; /* code blocks, quiet fills */
+  --ink: #141418;
+  --ink-2: #4a4a54;
+  --muted: #7d7d88;
+  --line: #e3e3e8;
+  --accent: #5048c8; /* kikyō blue-violet */
+  --accent-soft: #ecebfb;
+  --gold: #b0680c; /* fox-gold, hero only */
+  --sakura: #d45a7c; /* sakura, characters only */
+  --good: #0d7f3a;
+  --bad: #c0392b;
+  --s1: #2a78d6; /* released Kitsune model */
+  --s2: #eb6834; /* base model */
+  --s3: #1baf7a; /* other Kitsune variant */
+  --s4: #eda100; /* Qwen3.5-4B, r = 16 ablation */
+  --s5: #e87ba4; /* Qwen3.5-9B, r = 64 ablation */
+  --s6: #008300; /* teacher */
+  --q1: #9ec5f4; /* sequential: data-scaling runs */
+  --q2: #5598e7;
+  --q3: #1c5cab;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e0e11;
+    --surface: #16161b;
+    --wash: #1c1c22;
+    --ink: #ededf0;
+    --ink-2: #b9b9c3;
+    --muted: #85858f;
+    --line: #27272e;
+    --accent: #a6a2ff;
+    --accent-soft: #1f1e3a;
+    --sakura: #f59ab0;
+    --good: #3ccf7a;
+    --bad: #ff7b6b;
+    --s1: #3987e5;
+    --s2: #d95926;
+    --s3: #199e70;
+    --s4: #c98500;
+    --s5: #d55181;
+    --s6: #3f9f3f;
+    --q1: #1f4f8f;
+    --q2: #3987e5;
+    --q3: #9cc3f5;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e0e11;
+  --surface: #16161b;
+  --wash: #1c1c22;
+  --ink: #ededf0;
+  --ink-2: #b9b9c3;
+  --muted: #85858f;
+  --line: #27272e;
+  --accent: #a6a2ff;
+  --accent-soft: #1f1e3a;
+  --good: #3ccf7a;
+  --bad: #ff7b6b;
+  --s1: #3987e5;
+  --s2: #d95926;
+  --s3: #199e70;
+  --s4: #c98500;
+  --s5: #d55181;
+  --s6: #3f9f3f;
+  --q1: #1f4f8f;
+  --q2: #3987e5;
+  --q3: #9cc3f5;
+}
 @theme inline {
+  --color-paper: var(--paper);
   --color-surface: var(--surface);
   --color-wash: var(--wash);
   --color-ink: var(--ink);
@@ -7,7 +83,9 @@
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
   --color-gold: var(--gold);
+  --color-sakura: var(--sakura);
   --color-good: var(--good);
   --color-bad: var(--bad);
   --font-display: var(--font-mincho), "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
@@ -24,6 +102,7 @@ html {
   *,
   *::before,
   *::after {
+    animation: none !important;
   }
 }
 body {
@@ -32,6 +111,7 @@ body {
   font-family: var(--font-sans);
   font-size: 1rem;
   line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
 }
 h1,
 h2,
@@ -47,12 +127,33 @@ h3 {
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+  border-radius: 3px;
 }
 .no-scrollbar {
+  scrollbar-width: none;
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .tategaki {
+  writing-mode: vertical-rl;
   text-orientation: mixed;
+}
+/* Figures: one image per theme, both in the HTML; the inactive one is hidden. */
+.fig-dark {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .fig-light {
+    display: none;
+  }
+  :root:not([data-theme="light"]) .fig-dark {
+    display: block;
+  }
+}
+:root[data-theme="dark"] .fig-light {
+  display: none;
+}
+:root[data-theme="dark"] .fig-dark {
+  display: block;
 }
