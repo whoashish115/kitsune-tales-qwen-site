@@ -1,6 +1,6 @@
 import { D, int, usd } from "@/lib/kitsune";
 import { T, TB } from "./i18n";
-import { Card, Ext, Figure, Pill, Section } from "./primitives";
+import { Card, Ext, Figure, Pill, Section } from "./ui";
 import { TrainingPanels } from "./training-curves";
 
 const L = D.project.links;

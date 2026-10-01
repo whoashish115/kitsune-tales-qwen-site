@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { D, type Lang, LANGS, usd } from "@/lib/kitsune";
 import { T, TB } from "./i18n";
-import { Card, Ext, Pill, Section, Sub } from "./primitives";
+import { Card, Ext, Pill, Section, Sub } from "./ui";
 
 const L = D.project.links;
 

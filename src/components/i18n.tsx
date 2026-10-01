@@ -2,7 +2,7 @@
 
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
-/* Three reading modes: English, Japanese, or "mix" (the default): English with the Japanese set beside or beneath it.
+/* Three reading modes: English (the default), Japanese, or "mix": English with the Japanese set beside or beneath it.
    Every text exists in both languages in the static HTML and CSS picks what is visible (globals.css), so the page is
    complete without JavaScript. `mix` controls how a pair is set in mix mode:
      sub   the Japanese goes on its own line under the English (headings, captions, labels)
@@ -40,13 +40,13 @@ export function TB({ en, ja, className = "", mix = "sub" }: { en: ReactNode; ja:
 
 export type SiteLang = "mix" | "en" | "ja";
 const OPTIONS: [SiteLang, string, string][] = [
-  ["mix", "Mix", "英日"],
   ["en", "English", "EN"],
   ["ja", "日本語", "日本語"],
+  ["mix", "Mix", "英日"],
 ];
 
 export function LangMenu() {
-  const [lang, setLang] = useState<SiteLang>("mix");
+  const [lang, setLang] = useState<SiteLang>("en");
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {

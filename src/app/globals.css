@@ -169,7 +169,7 @@ h3 {
   display: block;
 }
 
-/* Language modes (components/i18n.tsx). "mix" is the default: English with the Japanese alongside.
+/* Language modes (components/i18n.tsx). English is the default; "mix" sets the Japanese alongside the English.
    Both texts are always in the HTML; these rules only choose what is visible and how the second one is set. */
 html[data-lang="en"] .i18n-ja,
 html[data-lang="ja"] .i18n-en,

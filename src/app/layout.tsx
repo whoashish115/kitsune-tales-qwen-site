@@ -57,12 +57,12 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 // Applies stored theme and language choices before paint. Theme follows the OS unless chosen; language defaults to
-// "mix" (English with Japanese alongside).
-const bootScript = `try{var r=document.documentElement,t=localStorage.getItem("kitsune-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);var l=localStorage.getItem("kitsune-lang");if(l!=="en"&&l!=="ja")l="mix";r.setAttribute("data-lang",l);if(l==="ja")r.setAttribute("lang","ja")}catch(e){document.documentElement.setAttribute("data-lang","mix")}`;
+// English.
+const bootScript = `try{var r=document.documentElement,t=localStorage.getItem("kitsune-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);var l=localStorage.getItem("kitsune-lang");if(l!=="mix"&&l!=="ja")l="en";r.setAttribute("data-lang",l);if(l==="ja")r.setAttribute("lang","ja")}catch(e){document.documentElement.setAttribute("data-lang","en")}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-lang="mix" className={`${mincho.variable} ${gothic.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" data-lang="en" className={`${mincho.variable} ${gothic.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>

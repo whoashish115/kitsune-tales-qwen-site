@@ -2,7 +2,7 @@
 
 import { D, pct, released, sys } from "@/lib/kitsune";
 import { T, TB } from "./i18n";
-import { Ext, Figure, Section, Sub, TableWrap } from "./primitives";
+import { Ext, Figure, Section, Sub, TableWrap } from "./ui";
 
 const mean = (s: ReturnType<typeof sys>, part: "test" | "policy", k: string) => (s[part][k] as { mean: number }).mean;
 
