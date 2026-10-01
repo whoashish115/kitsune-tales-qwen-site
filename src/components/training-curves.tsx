@@ -1,11 +1,15 @@
 "use client";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import { D } from "@/lib/kitsune";
 import { T } from "./i18n";
+
 /* Training metrics as logged by the trainer (reports/train_logs/*.json = each run's trainer_state.json, the same
    values W&B received). Panels share the x axis, the smoothing and the hover position, as in a W&B workspace. */
+
 type Series = { step: number[]; epoch: number[]; [k: string]: number[] };
 const CURVES = D.curves as Record<string, { train: Series; eval: Series }>;
+
 type Run = { id: string; en: string; ja: string; color: string; dash?: string };
 const RUNS: Record<"sft" | "dpo", Run[]> = {
   sft: [
@@ -22,6 +26,7 @@ const RUNS: Record<"sft" | "dpo", Run[]> = {
     { id: "dpo-main-v2", en: "dpo-main-v2 (JP, experiment)", ja: "dpo-main-v2（日本語・実験）", color: "var(--s3)" },
   ],
 };
+
 type Metric = { key: string; src: "train" | "eval"; en: string; ja: string };
 const METRICS: Record<"sft" | "dpo", Metric[]> = {
   sft: [
@@ -41,6 +46,8 @@ const METRICS: Record<"sft" | "dpo", Metric[]> = {
     { key: "rewards/rejected", src: "train", en: "train/rewards/rejected", ja: "報酬（非選好側）" },
   ],
 };
+
+/* Debiased exponential moving average, the smoothing W&B and TensorBoard apply to line plots. */
 function smooth(ys: number[], w: number): number[] {
   if (w <= 0) return ys;
   let s = 0;
@@ -49,6 +56,7 @@ function smooth(ys: number[], w: number): number[] {
     return s / (1 - Math.pow(w, i + 1));
   });
 }
+
 function niceTicks(lo: number, hi: number, count = 4): number[] {
   const span = hi - lo || Math.abs(hi) || 1;
   let step = Math.pow(10, Math.floor(Math.log10(span / count)));
@@ -60,9 +68,15 @@ function niceTicks(lo: number, hi: number, count = 4): number[] {
   for (let v = Math.ceil(lo / step) * step; v <= hi + step * 1e-9; v += step) out.push(+v.toPrecision(12));
   return out;
 }
+
 function fmt(v: number): string {
-  return null;
+  const a = Math.abs(v);
+  if (a !== 0 && a < 0.01) return v.toExponential(1);
+  if (a >= 100) return v.toFixed(0);
+  if (a >= 10) return v.toFixed(1);
+  return v.toFixed(3);
 }
+
 function useWidth<T extends HTMLElement>(): [React.RefObject<T | null>, number] {
   const ref = useRef<T>(null);
   const [w, setW] = useState(520);
@@ -74,6 +88,9 @@ function useWidth<T extends HTMLElement>(): [React.RefObject<T | null>, number] 
   }, []);
   return [ref, w];
 }
+
+type Line = { run: Run; xs: number[]; raw: number[]; ys: number[]; markers: boolean };
+
 function Chart({
   metric,
   lines,
@@ -208,6 +225,99 @@ function Chart({
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+export function TrainingPanels() {
+  const [group, setGroup] = useState<"sft" | "dpo">("sft");
+  const [hidden, setHidden] = useState<Record<string, boolean>>({});
+  const [xKey, setXKey] = useState<"step" | "epoch">("epoch");
+  const [w, setW] = useState(0.6);
+  const [hoverX, setHoverX] = useState<number | null>(null);
+  const [active, setActive] = useState<number | null>(null);
+  const runs = RUNS[group].filter((r) => CURVES[r.id]);
+  const shown = runs.filter((r) => !hidden[r.id]);
+  const panels = useMemo(
+    () =>
+      METRICS[group].map((mt) => ({
+        metric: mt,
+        lines: shown
+          .map((run) => {
+            const s = CURVES[run.id][mt.src];
+            const ys = s[mt.key];
+            if (!ys) return null;
+            const markers = mt.src === "eval";
+            return { run, xs: s[xKey], raw: ys, ys: markers ? ys : smooth(ys, w), markers } as Line;
+          })
+          .filter(Boolean) as Line[],
+      })),
+    [group, shown, xKey, w],
+  );
+  return (
+    <div className="flex flex-col gap-5">
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+        <div role="tablist" aria-label="Run group" className="inline-flex rounded-lg border border-line bg-surface p-1">
+          {(
+            [
+              ["sft", "SFT runs", "SFT 実行"],
+              ["dpo", "DPO runs", "DPO 実行"],
+            ] as const
+          ).map(([id, en, ja]) => (
+            <button
+              key={id}
+              role="tab"
+              aria-selected={group === id}
+              onClick={() => {
+                setGroup(id);
+                setHoverX(null);
+              }}
+              className={`rounded-md px-3 py-1 ${group === id ? "bg-ink text-paper" : "text-ink-2 hover:text-ink"}`}
+            >
+              <T en={`${en} (${RUNS[id].length})`} ja={`${ja}（${RUNS[id].length}）`} mix="side" />
+            </button>
+          ))}
+        </div>
+        <label className="flex items-center gap-2 text-ink-2">
+          <T en="x axis" ja="横軸" mix="side" />
+          <select value={xKey} onChange={(e) => setXKey(e.target.value as "step" | "epoch")} className="rounded-md border border-line bg-surface px-2 py-1 text-sm">
+            <option value="epoch">epoch</option>
+            <option value="step">step</option>
+          </select>
+        </label>
+        <label className="flex items-center gap-2 text-ink-2">
+          <T en="smoothing" ja="平滑化" mix="side" />
+          <input type="range" min={0} max={0.95} step={0.05} value={w} onChange={(e) => setW(+e.target.value)} className="w-28 accent-[var(--accent)]" />
+          <span className="num w-8 text-xs text-ink">{w.toFixed(2)}</span>
+        </label>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {runs.map((r) => (
+          <button
+            key={r.id}
+            type="button"
+            aria-pressed={!hidden[r.id]}
+            onClick={() => setHidden((h) => ({ ...h, [r.id]: !h[r.id] }))}
+            className={`flex items-center gap-2 rounded-full border px-3 py-1 text-xs ${hidden[r.id] ? "border-line text-muted line-through" : "border-line text-ink-2 hover:border-accent"}`}
+          >
+            <svg aria-hidden width="16" height="4">
+              <line x1="0" x2="16" y1="2" y2="2" stroke={r.color} strokeWidth="2.5" strokeDasharray={r.dash} />
+            </svg>
+            <T en={r.en} ja={r.ja} mix="en" />
+          </button>
+        ))}
+      </div>
+      <div className="grid gap-x-8 gap-y-6 md:grid-cols-2">
+        {panels.map((p, i) => (
+          <Chart key={p.metric.key} idx={i} metric={p.metric} lines={p.lines} xKey={xKey} hoverX={hoverX} setHoverX={setHoverX} active={active === i} setActive={setActive} />
+        ))}
+      </div>
+      <p className="text-xs text-muted">
+        <T
+          en="Values are the trainer's own logs (every 10 steps for SFT, every 5 for DPO; validation every 150 / 50 steps), identical to what the W&B project received. Train curves: faint = raw, solid = smoothed; validation points are unsmoothed. Click a run to hide it."
+          ja="値はトレーナー自身のログ（SFT は10ステップごと、DPO は5ステップごと。検証は150 / 50ステップごと）で、W&B プロジェクトに送られたものと同一です。学習曲線は薄線が生値、実線が平滑化後。検証点は平滑化していません。実行名をクリックすると非表示にできます。"
+        />
+      </p>
     </div>
   );
 }

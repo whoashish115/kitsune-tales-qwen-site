@@ -8,8 +8,9 @@
 <a href="https://huggingface.co/whoashish115/kitsune-tales-e4b-en">EN model</a></p>
 
 Source of the site for the two Gemma 4 E4B fine-tunes `kitsune-tales-e4b-jp` and `kitsune-tales-e4b-en`:
-results with confidence intervals, interactive training curves for all nine runs, 19 figures, samples and every link.
-The page reads in English, Japanese or both (the default "mix" mode).
+the models, the data, interactive training curves, the main results with three figures, samples and links.
+The full set of figures and tables is in the main repository's README and report.
+The page reads in English (the default), Japanese or both ("mix").
 
 ## Data
 
@@ -38,7 +39,7 @@ Next.js 16 (static export), React 19, Tailwind CSS 4, TypeScript. Deployed on Ve
 src/app/          layout, global styles (palette tokens for light and dark), favicon
 src/components/   hero, model/data/training/results sections, W&B-style training charts, language switch
 src/data/         kitsune.json, exported from the main repository
-public/figures/   paper figures in light and dark versions, exported from the main repository
+public/figures/   the three site figures in light and dark versions, exported from the main repository
 ```
 
 ## License
