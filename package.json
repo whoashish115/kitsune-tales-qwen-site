@@ -2,9 +2,8 @@
   "name": "kitsune-tales-site",
   "version": "0.1.0",
   "private": true,
-  "description": "Project site for Kitsune-Tales: what the project is, how it was built, and every evaluation result.",
+  "description": "Site for Kitsune Tales: two fantasy light-novel fine-tunes of Gemma 4 E4B, in Japanese and English.",
   "scripts": {
-    "data": "cd .. && python -m kitsune.site_export",
     "dev": "next dev",
     "build": "next build",
     "start": "npx serve out",

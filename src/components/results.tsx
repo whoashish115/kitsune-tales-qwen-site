@@ -1,6 +1,6 @@
 "use client";
 
-import { D, pct, released, sys } from "@/lib/kitsune";
+import { D, pct, released, sys } from "@/lib/data";
 import { T, TB } from "./i18n";
 import { Ext, Figure, Section, Sub, TableWrap } from "./ui";
 

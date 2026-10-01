@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { D } from "@/lib/kitsune";
+import { D } from "@/lib/data";
 import { LangMenu, T } from "./i18n";
 
 export const SECTIONS = [

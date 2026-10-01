@@ -1,4 +1,4 @@
-import { D, int, usd } from "@/lib/kitsune";
+import { D, int, usd } from "@/lib/data";
 import { T, TB } from "./i18n";
 import { Card, Ext, Figure, Pill, Section } from "./ui";
 import { TrainingPanels } from "./wandb";

@@ -1,6 +1,6 @@
 "use client";
 
-import { D } from "@/lib/kitsune";
+import { D } from "@/lib/data";
 import { T } from "./i18n";
 
 const L = D.project.links;

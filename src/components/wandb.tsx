@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { D } from "@/lib/kitsune";
+import { D } from "@/lib/data";
 import { T } from "./i18n";
 
 /* Training metrics as logged by the trainer (reports/train_logs/*.json = each run's trainer_state.json, the same

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { D, type Lang, LANGS, usd } from "@/lib/kitsune";
+import { D, type Lang, LANGS, usd } from "@/lib/data";
 import { T, TB } from "./i18n";
 import { Card, Ext, Pill, Section, Sub } from "./ui";
 
@@ -212,7 +212,7 @@ export function Resources() {
   ];
   const limits: [string, string, string, string][] = [
     ["No human evaluation", "人手評価なし", "Quality rests on rule-based metrics and one LLM judge whose full-output verdicts are confounded by length.", "品質の評価はルールベースの指標と1つの LLM 評価に依拠し、出力全体での判定は長さに交絡しています。"],
-    ["Synthetic-data ceiling", "合成データの上限", "Everything was learned from two larger models, including their clichés; both released models lose clearly to the 35B teacher.", "学習内容はすべて2つの大型モデル由来で、その常套句も含みます。35Bの教師には明確に及びません。"],
+    ["Synthetic-data ceiling", "合成データの上限", "Everything was learned from two larger models, including their clichés; the Japanese models lose clearly to the 35B teacher.", "学習内容はすべて2つの大型モデル由来で、その常套句も含みます。日本語モデルは35Bの教師に明確に及びません。"],
     ["Lexicon-based safety", "語彙ベースの安全性評価", "Filters miss paraphrases and flag idioms; hateful framing that avoids listed terms is undercounted.", "フィルタは言い換えを見逃し慣用句を誤検出します。リスト外の語によるヘイト表現は過小評価されます。"],
     ["Japanese model without DPO", "日本語モデルは DPO なし", "The Japanese release is SFT only; DPO with safety pairs was validated in English and not rerun for Japanese.", "日本語の公開モデルは SFT のみ。安全ペア付き DPO は英語で検証し、日本語では再実行していません。"],
   ];
