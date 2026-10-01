@@ -78,7 +78,7 @@ export function LangMenu() {
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1 text-xs text-ink-2 hover:border-accent hover:text-accent"
+        className="flex h-9 items-center gap-1.5 rounded-full border border-line px-3 text-sm text-ink-2 hover:border-accent hover:text-accent"
       >
         {current[2]}
       </button>

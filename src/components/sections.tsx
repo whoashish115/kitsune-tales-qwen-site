@@ -1,7 +1,7 @@
 import { D, int, usd } from "@/lib/kitsune";
 import { T, TB } from "./i18n";
 import { Card, Ext, Figure, Pill, Section } from "./ui";
-import { TrainingPanels } from "./training-curves";
+import { TrainingPanels } from "./wandb";
 
 const L = D.project.links;
 const RUNS = D.training.runs;

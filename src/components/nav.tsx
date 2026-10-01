@@ -13,49 +13,40 @@ export const SECTIONS = [
   ["resources", "Links", "リンク"],
 ] as const;
 
-type Theme = "system" | "light" | "dark";
+type Theme = "light" | "dark";
 
+/** Light by default; the button switches to dark and back. The OS colour scheme is not consulted. */
 function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("system");
+  const [theme, setTheme] = useState<Theme>("light");
   useEffect(() => {
-    const t = document.documentElement.getAttribute("data-theme");
-    if (t === "light" || t === "dark") setTheme(t);
+    if (document.documentElement.getAttribute("data-theme") === "dark") setTheme("dark");
   }, []);
-  const cycle = () => {
-    const next: Theme = theme === "system" ? "dark" : theme === "dark" ? "light" : "system";
+  const toggle = () => {
+    const next: Theme = theme === "dark" ? "light" : "dark";
     setTheme(next);
-    const root = document.documentElement;
-    if (next === "system") root.removeAttribute("data-theme");
-    else root.setAttribute("data-theme", next);
+    document.documentElement.setAttribute("data-theme", next);
     try {
-      if (next === "system") localStorage.removeItem("kitsune-theme");
-      else localStorage.setItem("kitsune-theme", next);
+      localStorage.setItem("kitsune-theme", next);
     } catch {
       /* storage can be unavailable; the choice then lasts for this visit only */
     }
   };
-  const name = { system: "auto", dark: "dark", light: "light" }[theme];
   return (
     <button
       type="button"
-      onClick={cycle}
-      aria-label={`Color theme: ${name}. Change theme`}
-      title={`Theme: ${name}`}
-      className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-line text-ink-2 hover:border-accent hover:text-accent"
+      onClick={toggle}
+      aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+      title={theme === "dark" ? "Light theme" : "Dark theme"}
+      className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line text-ink-2 hover:border-accent hover:text-accent"
     >
-      <svg aria-hidden width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <svg aria-hidden width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
         {theme === "dark" ? (
-          <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
-        ) : theme === "light" ? (
           <>
             <circle cx="12" cy="12" r="4" />
             <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
           </>
         ) : (
-          <>
-            <circle cx="12" cy="12" r="8" />
-            <path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" />
-          </>
+          <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
         )}
       </svg>
     </button>
@@ -79,28 +70,33 @@ export function Nav() {
   const L = D.project.links;
   return (
     <header className="sticky z-40 border-b border-line bg-paper/85 backdrop-blur" style={{ top: "env(safe-area-inset-top, 0px)" }}>
-      <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 py-2.5 sm:gap-3 sm:px-6">
-        <a href="#top" className="flex shrink-0 items-center gap-2">
+      <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 py-3 sm:gap-3 sm:px-6">
+        <a href="#top" className="flex shrink-0 items-center gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element -- static export */}
-          <img src="logo.png" alt="" width={28} height={28} className="h-7 w-7" />
-          <span className="font-display text-base font-bold sm:text-lg">Kitsune Tales</span>
-          <span className="hidden text-xs text-muted md:inline">狐の物語</span>
+          <img src="logo.png" alt="" width={36} height={36} className="h-9 w-9" />
+          <span className="font-display text-lg font-bold sm:text-xl">Kitsune Tales</span>
+          <span className="hidden text-sm text-muted md:inline">狐の物語</span>
         </a>
         <nav aria-label="Sections" className="no-scrollbar min-w-0 flex-1 overflow-x-auto">
-          <ul className="flex gap-0.5 whitespace-nowrap text-sm">
+          <ul className="flex gap-0.5 whitespace-nowrap text-[0.95rem]">
             {SECTIONS.map(([id, en, ja]) => (
               <li key={id}>
                 <a
                   href={`#${id}`}
-                  className={`rounded-md px-2.5 py-1 transition-colors ${active === id ? "bg-accent-soft text-accent" : "text-ink-2 hover:text-ink"}`}
+                  className={`rounded-md px-3 py-1.5 transition-colors ${active === id ? "bg-accent-soft text-accent" : "text-ink-2 hover:text-ink"}`}
                 >
                   <T en={en} ja={ja} mix="ja" />
                 </a>
               </li>
             ))}
+            <li>
+              <a href="/slides/" className="rounded-md px-3 py-1.5 text-ink-2 transition-colors hover:text-ink">
+                <T en="Slides" ja="スライド" mix="ja" />
+              </a>
+            </li>
           </ul>
         </nav>
-        <div className="hidden items-center gap-3 text-xs text-ink-2 lg:flex">
+        <div className="hidden items-center gap-4 text-sm text-ink-2 lg:flex">
           <a href={L.github} target="_blank" rel="noreferrer" className="hover:text-accent">
             GitHub
           </a>

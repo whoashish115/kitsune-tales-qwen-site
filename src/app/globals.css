@@ -4,6 +4,7 @@
    the bellflower) for links and focus, and fox-gold / sakura reserved for the hero and the characters.
    Chart series colors are a separate categorical set (--s1..--s6), fixed per system and shared with kitsune.figures. */
 :root {
+  color-scheme: light;
   --paper: #f6f6f7; /* page plane, cool neutral */
   --surface: #ffffff; /* raised panels */
   --wash: #efeff2; /* code blocks, quiet fills */
@@ -26,33 +27,6 @@
   --q1: #9ec5f4; /* sequential: data-scaling runs */
   --q2: #5598e7;
   --q3: #1c5cab;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #0e0e11;
-    --surface: #16161b;
-    --wash: #1c1c22;
-    --ink: #ededf0;
-    --ink-2: #b9b9c3;
-    --muted: #85858f;
-    --line: #27272e;
-    --accent: #a6a2ff;
-    --accent-soft: #1f1e3a;
-    --gold: #f0b458;
-    --sakura: #f59ab0;
-    --good: #3ccf7a;
-    --bad: #ff7b6b;
-    --s1: #3987e5;
-    --s2: #d95926;
-    --s3: #199e70;
-    --s4: #c98500;
-    --s5: #d55181;
-    --s6: #3f9f3f;
-    --q1: #1f4f8f;
-    --q2: #3987e5;
-    --q3: #9cc3f5;
-    color-scheme: dark;
-  }
 }
 :root[data-theme="dark"] {
   --paper: #0e0e11;
@@ -154,14 +128,6 @@ h3 {
 .fig-dark {
   display: none;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .fig-light {
-    display: none;
-  }
-  :root:not([data-theme="light"]) .fig-dark {
-    display: block;
-  }
-}
 :root[data-theme="dark"] .fig-light {
   display: none;
 }
@@ -214,10 +180,4 @@ svg text.i18n-ja {
 :root[data-theme="dark"] .seigaiha {
   filter: invert(1);
   opacity: 0.12;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .seigaiha {
-    filter: invert(1);
-    opacity: 0.12;
-  }
 }
