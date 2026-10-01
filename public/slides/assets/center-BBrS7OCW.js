@@ -1,1 +1,0 @@
-import{I as e,h as t,v as n,z as r}from"./modules/shiki-CmTNrY-9.js";import{gt as i}from"./index-C8b8stvW.js";var a=`/slides/assets/logo-ICoDUvtK.png`,o={},s={class:`slidev-layout center h-full grid place-content-center`},c={class:`my-auto`};function l(i,a){return e(),n(`div`,s,[t(`div`,c,[r(i.$slots,`default`)])])}var u=i(o,[[`render`,l]]);export{a as n,u as t};
