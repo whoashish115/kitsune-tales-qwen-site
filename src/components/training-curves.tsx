@@ -2,6 +2,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { D } from "@/lib/kitsune";
 import { T } from "./i18n";
+/* Training metrics as logged by the trainer (reports/train_logs/*.json = each run's trainer_state.json, the same
+   values W&B received). Panels share the x axis, the smoothing and the hover position, as in a W&B workspace. */
+type Series = { step: number[]; epoch: number[]; [k: string]: number[] };
+const CURVES = D.curves as Record<string, { train: Series; eval: Series }>;
 type Run = { id: string; en: string; ja: string; color: string; dash?: string };
 const RUNS: Record<"sft" | "dpo", Run[]> = {
   sft: [
@@ -37,3 +41,9 @@ const METRICS: Record<"sft" | "dpo", Metric[]> = {
     { key: "rewards/rejected", src: "train", en: "train/rewards/rejected", ja: "報酬（非選好側）" },
   ],
 };
+function fmt(v: number): string {
+  return null;
+}
+function useWidth<T extends HTMLElement>(): [React.RefObject<T | null>, number] {
+  return null;
+}

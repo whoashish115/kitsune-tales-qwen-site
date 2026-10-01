@@ -8,7 +8,7 @@ const mono = JetBrains_Mono({ weight: ["400", "600"], subsets: ["latin"], variab
 
 const SITE = "https://kitsune-tales-qwen.vercel.app";
 const DESCRIPTION =
-  "Two LoRA fine-tunes of Gemma 4 E4B that write original fantasy light-novel fiction in Japanese (kitsune-tales-e4b-jp) and English (kitsune-tales-e4b-en). Synthetic data pipeline, training curves for every run, evaluation with 95% confidence intervals, a validated LLM judge, safety and memorization audits.";
+  "Two LoRA fine-tunes of Gemma 4 E4B that write original fantasy light-novel fiction in Japanese (kitsune-tales-e4b-jp) and English (kitsune-tales-e4b-en). Synthetic data, interactive training curves, held-out evaluation with 95% confidence intervals, a validated LLM judge and a safety audit.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
@@ -43,13 +43,13 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     locale: "en_US",
     alternateLocale: ["ja_JP"],
-    images: [{ url: "/figures/eval_metrics.png", width: 2164, height: 952, alt: "Automatic metrics for every evaluated system with 95% confidence intervals" }],
+    images: [{ url: "/figures/judge_preference.png", width: 1647, height: 1023, alt: "LLM judge net preference with 95% confidence intervals, full outputs and equal-length openings" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Kitsune Tales: fantasy light-novel LLMs in Japanese and English",
     description: DESCRIPTION,
-    images: ["/figures/eval_metrics.png"],
+    images: ["/figures/judge_preference.png"],
   },
   robots: { index: true, follow: true },
 };

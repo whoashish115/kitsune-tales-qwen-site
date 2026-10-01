@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { D, type Lang, LANGS, int, usd } from "@/lib/kitsune";
+import { D, type Lang, LANGS, usd } from "@/lib/kitsune";
 import { T, TB } from "./i18n";
-import { Ext, Figure, Pill, Section, Sub, TableWrap } from "./primitives";
+import { Card, Ext, Pill, Section, Sub } from "./primitives";
 
 const L = D.project.links;
 
@@ -120,24 +120,47 @@ export function Samples() {
 
 /* ================================================================== 6. links, usage, compute, limitations */
 
-function LinkTable({ rows }: { rows: { name: string; href: string; en: string; ja: string }[] }) {
+type Row = { en: string; ja: string; links: [string, string][] };
+
+/** One card per platform; each row is a label followed by compact link chips. */
+function PlatformCard({ name, host, en, ja, rows, className = "" }: { name: string; host: string; en: string; ja: string; rows: Row[]; className?: string }) {
   return (
-    <ul className="flex flex-col">
-      {rows.map((x) => (
-        <li key={x.href} className="grid grid-cols-1 gap-x-4 border-b border-line py-2.5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-          <Ext href={x.href} className="num truncate text-sm">
-            {x.name}
-          </Ext>
-          <span className="text-sm text-ink-2">
-            <T en={x.en} ja={x.ja} mix="side" />
-          </span>
-        </li>
-      ))}
-    </ul>
+    <Card className={`flex flex-col gap-4 ${className}`}>
+      <div className="flex flex-col gap-1">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+          <h3 className="font-display text-xl font-bold">{name}</h3>
+          <span className="num text-xs text-muted">{host}</span>
+        </div>
+        <p className="text-sm text-ink-2">
+          <T en={en} ja={ja} />
+        </p>
+      </div>
+      <dl className="flex flex-col gap-2.5 border-t border-line pt-4">
+        {rows.map((r) => (
+          <div key={r.en} className="grid grid-cols-[5.5rem_minmax(0,1fr)] items-start gap-3">
+            <dt className="pt-0.5 text-sm text-muted">
+              <T en={r.en} ja={r.ja} mix="en" />
+            </dt>
+            <dd className="flex flex-wrap gap-1.5">
+              {r.links.map(([label, href]) => (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-full border border-line px-2.5 py-0.5 text-xs text-ink-2 hover:border-accent hover:text-accent"
+                >
+                  {label}
+                </a>
+              ))}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </Card>
   );
 }
 
-const short = (u: string) => u.replace("https://huggingface.co/", "hf.co/").replace("https://", "");
 const BIBTEX = `@misc{kumar2026kitsunetales,
   title  = {Kitsune Tales: Fantasy Light-Novel Fine-Tunes
             of Gemma 4 E4B in Japanese and English},
@@ -156,60 +179,48 @@ export function Resources() {
       setCopied(false);
     }
   };
-  const groups: { en: string; ja: string; rows: { name: string; href: string; en: string; ja: string }[] }[] = [
+  const platforms = [
     {
-      en: "Models",
-      ja: "モデル",
+      name: "Hugging Face",
+      host: "hf.co/whoashish115",
+      en: "Weights, GGUF files, adapters, datasets and the demo.",
+      ja: "重み・GGUF・アダプタ・データセット・デモ。",
       rows: [
-        { name: short(L.models.jp.merged), href: L.models.jp.merged, en: "Japanese, merged bf16 weights (SFT)", ja: "日本語、マージ済み bf16 重み（SFT）" },
-        { name: short(L.models.jp.lora), href: L.models.jp.lora, en: "Japanese, LoRA adapter", ja: "日本語、LoRA アダプタ" },
-        { name: short(L.models.jp.gguf), href: L.models.jp.gguf, en: "Japanese, GGUF Q4_K_M and Q8_0", ja: "日本語、GGUF Q4_K_M・Q8_0" },
-        { name: short(L.models.en.merged), href: L.models.en.merged, en: "English, merged bf16 weights (SFT + DPO)", ja: "英語、マージ済み bf16 重み（SFT + DPO）" },
-        { name: short(L.models.en.lora), href: L.models.en.lora, en: "English, LoRA adapter", ja: "英語、LoRA アダプタ" },
-        { name: short(L.models.en.gguf), href: L.models.en.gguf, en: "English, GGUF Q4_K_M and Q8_0", ja: "英語、GGUF Q4_K_M・Q8_0" },
-      ],
+        { en: "Japanese", ja: "日本語", links: [["Model", L.models.jp.merged], ["GGUF", L.models.jp.gguf], ["LoRA", L.models.jp.lora], ["Dataset", L.datasets.jp]] },
+        { en: "English", ja: "英語", links: [["Model", L.models.en.merged], ["GGUF", L.models.en.gguf], ["LoRA", L.models.en.lora], ["Dataset", L.datasets.en]] },
+        { en: "Demo", ja: "デモ", links: [["Space", L.space]] },
+      ] as Row[],
     },
     {
-      en: "Data and demo",
-      ja: "データとデモ",
+      name: "GitHub",
+      host: "github.com/whoashish115",
+      en: "Pipeline, training, evaluation, the report and this site.",
+      ja: "パイプライン・学習・評価・レポート・本サイト。",
       rows: [
-        { name: short(L.datasets.jp), href: L.datasets.jp, en: `Japanese SFT data, ${int(D.data.ja.train)} train / ${int(D.data.ja.val)} validation`, ja: `日本語 SFT データ（学習 ${int(D.data.ja.train)} / 検証 ${int(D.data.ja.val)}）` },
-        { name: short(L.datasets.en), href: L.datasets.en, en: `English SFT data, ${int(D.data.en.train)} train / ${int(D.data.en.val)} validation`, ja: `英語 SFT データ（学習 ${int(D.data.en.train)} / 検証 ${int(D.data.en.val)}）` },
-        { name: short(L.space), href: L.space, en: "Playground for both models (Gradio)", ja: "両モデルのプレイグラウンド（Gradio）" },
-        { name: short(L.collection), href: L.collection, en: "Hugging Face collection", ja: "Hugging Face コレクション" },
-      ],
+        { en: "Code", ja: "コード", links: [["kitsune-tales-qwen", L.github]] },
+        { en: "Report", ja: "レポート", links: [["REPORT.md", `${L.github}/blob/main/REPORT.md`]] },
+        { en: "Site", ja: "サイト", links: [["kitsune-tales-qwen-site", L.site_repo]] },
+      ] as Row[],
     },
     {
-      en: "Code, logs and write-ups",
-      ja: "コード・ログ・文書",
-      rows: [
-        { name: short(L.github), href: L.github, en: "Pipeline, training, evaluation, figures and this site", ja: "パイプライン・学習・評価・図・本サイト" },
-        { name: short(L.site_repo), href: L.site_repo, en: "Source of this website (Next.js)", ja: "本サイトのソース（Next.js）" },
-        { name: "wandb.ai/whoashish115-base/kitsune-tales", href: L.wandb, en: "Training runs and system metrics", ja: "学習実行とシステム指標" },
-        { name: "REPORT.md", href: `${L.github}/blob/main/REPORT.md`, en: "Technical report", ja: "技術レポート" },
-        { name: "README.ja.md", href: `${L.github}/blob/main/README.ja.md`, en: "Japanese README", ja: "日本語 README" },
-        { name: "docs/ARTICLE.md", href: `${L.github}/blob/main/docs/ARTICLE.md`, en: "Article-length write-up", ja: "記事版" },
-      ],
+      name: "Weights & Biases",
+      host: "wandb.ai/whoashish115-base",
+      en: "Trainer logs and system metrics for every run.",
+      ja: "全実行の学習ログとシステム指標。",
+      rows: [{ en: "Runs", ja: "実行", links: [["kitsune-tales", L.wandb]] }] as Row[],
     },
   ];
   const limits: [string, string, string, string][] = [
     ["No human evaluation", "人手評価なし", "Quality rests on rule-based metrics and one LLM judge whose full-output verdicts are confounded by length.", "品質の評価はルールベースの指標と1つの LLM 評価に依拠し、出力全体での判定は長さに交絡しています。"],
     ["Synthetic-data ceiling", "合成データの上限", "Everything was learned from two larger models, including their clichés; both released models lose clearly to the 35B teacher.", "学習内容はすべて2つの大型モデル由来で、その常套句も含みます。35Bの教師には明確に及びません。"],
     ["Lexicon-based safety", "語彙ベースの安全性評価", "Filters miss paraphrases and flag idioms; hateful framing that avoids listed terms is undercounted.", "フィルタは言い換えを見逃し慣用句を誤検出します。リスト外の語によるヘイト表現は過小評価されます。"],
-    ["Adversarial titles", "敵対的タイトル", "Titles that ask the model to drop fantasy are followed more often than by the base model.", "ファンタジーをやめるよう求めるタイトルに、ベースより従いやすくなっています。"],
     ["Japanese model without DPO", "日本語モデルは DPO なし", "The Japanese release is SFT only; DPO with safety pairs was validated in English and not rerun for Japanese.", "日本語の公開モデルは SFT のみ。安全ペア付き DPO は英語で検証し、日本語では再実行していません。"],
-    ["Single annotator", "アノテータは1名", "Manual checks and the sample translations come from one person.", "目視確認と出力例の翻訳は1名によるものです。"],
   ];
   return (
     <Section id="resources" n="6" title={<T en="Resources" ja="リソース" />}>
-      <div className="grid gap-10 lg:grid-cols-2">
-        {groups.map((g) => (
-          <div key={g.en} className={`flex min-w-0 flex-col gap-2 ${g.en === "Models" ? "lg:row-span-2" : ""}`}>
-            <h3 className="font-display text-xl font-bold">
-              <T en={g.en} ja={g.ja} mix="side" />
-            </h3>
-            <LinkTable rows={g.rows} />
-          </div>
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr]">
+        {platforms.map((p, i) => (
+          <PlatformCard key={p.name} {...p} className={i === 0 ? "md:col-span-2 lg:col-span-1" : ""} />
         ))}
       </div>
       <p className="-mt-6 text-xs text-muted">
@@ -259,18 +270,12 @@ Format: synopsis<turn|>
 <|turn>model
 '`}
           </pre>
-          <p className="text-xs text-muted">
-            <T
-              en={`Measured with llama.cpp on 8 CPU cores: ${D.gguf.jp.cpu_tokens_per_s} tokens/s (JP), ${D.gguf.en.cpu_tokens_per_s} tokens/s (EN), Q4_K_M.`}
-              ja={`llama.cpp、8 CPU コアで計測：${D.gguf.jp.cpu_tokens_per_s} tokens/s（日本語）、${D.gguf.en.cpu_tokens_per_s} tokens/s（英語）、Q4_K_M。`}
-            />
-          </p>
         </div>
       </div>
       <Sub n="6.2" title={<T en="Compute" ja="計算資源" />}>
         <T
-          en={`All jobs ran on Modal: H100s for generation, training and judging, CPUs for data processing. Before each GPU job a guard compared Modal's billed total plus 1.25 times the job's estimate with a per-account limit. Total billed: ${usd(D.budget.total_billed)}.`}
-          ja={`全ジョブを Modal で実行しました（生成・学習・評価は H100、データ処理は CPU）。GPU ジョブの起動前ごとに、Modal の請求額とジョブ見積もりの1.25倍の合計をアカウントごとの上限と比較しています。総請求額：${usd(D.budget.total_billed)}。`}
+          en={`All jobs ran on rented cloud GPUs: H100s for generation, training and judging, CPUs for data processing. Before each GPU job, a budget guard compared the billed total plus 1.25 times the job's estimate with a fixed limit. Total billed: ${usd(D.budget.total_billed)}.`}
+          ja={`全ジョブをクラウド GPU で実行しました（生成・学習・評価は H100、データ処理は CPU）。GPU ジョブの起動前ごとに、請求額とジョブ見積もりの1.25倍の合計を固定の上限と比較しています。総請求額：${usd(D.budget.total_billed)}。`}
         />
       </Sub>
       <Sub n="6.3" title={<T en="Limitations" ja="限界" />} />
