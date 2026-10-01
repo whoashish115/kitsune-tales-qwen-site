@@ -14,12 +14,13 @@ The page reads in English (the default), Japanese or both ("mix").
 
 ## Data
 
-This repository holds no statistics of its own. `src/data/kitsune.json` and `public/figures/` are exported from the
+This repository holds no statistics of its own. `src/data/kitsune.json`, `public/figures/` and `public/slides/` are exported from the
 [main repository](https://github.com/whoashish115/kitsune-tales-qwen), where every number is computed from `reports/`:
 
 ```bash
 # in a checkout of kitsune-tales-qwen, with this repository next to it
 python -m kitsune.figures
+(cd slides && npm install && npm run build)   # the deck, copied into public/slides/
 python -m kitsune.site_export --site ../kitsune-tales-qwen-site
 ```
 
@@ -40,6 +41,7 @@ src/app/          layout, global styles (palette tokens for light and dark), fav
 src/components/   hero, model/data/training/results sections, W&B-style training charts, language switch
 src/data/         kitsune.json, exported from the main repository
 public/figures/   the three site figures in light and dark versions, exported from the main repository
+public/slides/    the built Slidev deck, served at /slides/; its source is slides/ in the main repository
 ```
 
 ## License
