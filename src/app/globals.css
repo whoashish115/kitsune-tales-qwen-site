@@ -1,21 +1,19 @@
 @import "tailwindcss";
 
-/* Kitsune Tales. A research page with a Japanese hand: sumi-grey monotone surfaces, one blue-violet accent (kikyō,
-   the bellflower) for links and focus, and fox-gold / sakura reserved for the hero and the characters.
-   Chart series colors are a separate categorical set (--s1..--s6), fixed per system and shared with kitsune.figures. */
+/* Kitsune Tales. A plain research page: cool slate-grey surfaces and ink, one blue-violet accent (kikyō, the bellflower)
+   for links and focus. Chart series colors are a separate categorical set (--s1..--s6), fixed per system and shared with
+   kitsune.figures. */
 :root {
   color-scheme: light;
-  --paper: #f6f6f7; /* page plane, cool neutral */
+  --paper: #f8fafc; /* page plane, cool slate grey */
   --surface: #ffffff; /* raised panels */
-  --wash: #efeff2; /* code blocks, quiet fills */
-  --ink: #141418;
-  --ink-2: #4a4a54;
-  --muted: #7d7d88;
-  --line: #e3e3e8;
-  --accent: #5048c8; /* kikyō blue-violet */
-  --accent-soft: #ecebfb;
-  --gold: #b0680c; /* fox-gold, hero only */
-  --sakura: #d45a7c; /* sakura, characters only */
+  --wash: #f1f5f9; /* code blocks, quiet fills */
+  --ink: #0f172a;
+  --ink-2: #334155;
+  --muted: #64748b;
+  --line: #e2e8f0;
+  --accent: #5048c8; /* kikyō blue-violet, links and focus only */
+  --accent-soft: #eef2f7; /* neutral blue-grey highlight */
   --good: #0d7f3a;
   --bad: #c0392b;
   --s1: #2a78d6; /* released Kitsune model */
@@ -29,17 +27,15 @@
   --q3: #1c5cab;
 }
 :root[data-theme="dark"] {
-  --paper: #0e0e11;
-  --surface: #16161b;
-  --wash: #1c1c22;
-  --ink: #ededf0;
-  --ink-2: #b9b9c3;
-  --muted: #85858f;
-  --line: #27272e;
+  --paper: #020617;
+  --surface: #0f172a;
+  --wash: #1e293b;
+  --ink: #f1f5f9;
+  --ink-2: #cbd5e1;
+  --muted: #94a3b8;
+  --line: #1e293b;
   --accent: #a6a2ff;
-  --accent-soft: #1f1e3a;
-  --gold: #f0b458;
-  --sakura: #f59ab0;
+  --accent-soft: #1e293b;
   --good: #3ccf7a;
   --bad: #ff7b6b;
   --s1: #3987e5;
@@ -64,8 +60,6 @@
   --color-line: var(--line);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
-  --color-gold: var(--gold);
-  --color-sakura: var(--sakura);
   --color-good: var(--good);
   --color-bad: var(--bad);
   --font-display: var(--font-mincho), "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
