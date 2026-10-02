@@ -34,16 +34,6 @@ npm run build    # static export to out/
 
 Next.js 16 (static export), React 19, Tailwind CSS 4, TypeScript. Deployed on Vercel from `main`.
 
-## Layout
-
-```
-src/app/          layout, global styles (palette tokens for light and dark), favicon
-src/components/   hero, model/data/training/results sections, W&B-style training charts, language switch
-src/data/         kitsune.json, exported from the main repository
-public/figures/   the three site figures in light and dark versions, exported from the main repository
-public/slides/    the built Slidev deck, served at /slides/; its source is slides/ in the main repository
-```
-
 ## License
 
 Apache-2.0.
