@@ -4,10 +4,10 @@
 
 <p align="center"><a href="https://kitsune-tales-qwen.vercel.app"><b>Site</b></a> ·
 <a href="https://github.com/whoashish115/kitsune-tales-qwen">Main repo</a> ·
-<a href="https://huggingface.co/whoashish115/kitsune-tales-e4b-jp">JP model</a> ·
-<a href="https://huggingface.co/whoashish115/kitsune-tales-e4b-en">EN model</a></p>
+<a href="https://huggingface.co/whoashish115/Kitsune-Tales-E4B-JP">JP model</a> ·
+<a href="https://huggingface.co/whoashish115/Kitsune-Tales-E4B-EN">EN model</a></p>
 
-Source of the site for the two Gemma 4 E4B fine-tunes `kitsune-tales-e4b-jp` and `kitsune-tales-e4b-en`:
+Source of the site for the two Gemma 4 E4B fine-tunes `Kitsune-Tales-E4B-JP` and `Kitsune-Tales-E4B-EN`:
 the models, the data, interactive training curves, the main results with three figures, samples and links.
 The full set of figures and tables is in the main repository's README and report.
 The page reads in English (the default), Japanese or both ("mix").

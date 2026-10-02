@@ -8,7 +8,7 @@ const mono = JetBrains_Mono({ weight: ["400", "600"], subsets: ["latin"], variab
 
 const SITE = "https://kitsune-tales-qwen.vercel.app";
 const DESCRIPTION =
-  "Two LoRA fine-tunes of Gemma 4 E4B that write original fantasy light-novel fiction in Japanese (kitsune-tales-e4b-jp) and English (kitsune-tales-e4b-en). Synthetic data, interactive training curves, held-out evaluation with 95% confidence intervals, a validated LLM judge and a safety audit.";
+  "Two LoRA fine-tunes of Gemma 4 E4B that write original fantasy light-novel fiction in Japanese (Kitsune-Tales-E4B-JP) and English (Kitsune-Tales-E4B-EN). Synthetic data, interactive training curves, held-out evaluation with 95% confidence intervals, a validated LLM judge and a safety audit.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   creator: "Ashish Kumar",
   keywords: [
     "Kitsune Tales",
-    "kitsune-tales-e4b-jp",
-    "kitsune-tales-e4b-en",
+    "Kitsune-Tales-E4B-JP",
+    "Kitsune-Tales-E4B-EN",
     "Gemma 4 E4B",
     "LoRA",
     "DPO",

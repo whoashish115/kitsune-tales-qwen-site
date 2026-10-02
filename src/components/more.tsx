@@ -259,7 +259,7 @@ print(tok.decode(out[0, ids.shape[1]:], skip_special_tokens=True))`}
             <T en="llama.cpp, 4-bit GGUF on CPU" ja="llama.cpp（4ビット GGUF、CPU）" mix="side" />
           </p>
           <pre className="num overflow-x-auto rounded-md bg-wash p-4 text-xs leading-relaxed text-ink-2">
-{`llama-cli -m kitsune-tales-e4b-en-Q4_K_M.gguf -st \\
+{`llama-cli -m Kitsune-Tales-E4B-EN-Q4_K_M.gguf -st \\
   --temp 0.8 --top-p 0.95 -n 700 -p \\
 '<|turn>system
 You write original, general-audience fantasy light novels ...<turn|>
